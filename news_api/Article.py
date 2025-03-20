@@ -1,35 +1,13 @@
 import json as js
-import requests as rq
-from HTML_scrapper import HTML
+from .html_parser import HTMLParser
 
 class Article(dict):
-    def get_html(self) -> (str|None):
-        """
-        Scrapes content from the url stored in "link".
-
-        Returns:
-            str: Error message if an error has occured
-            None: The operation was successfull
-        
-        """
-        if "link" not in self:
-            return "Attribute error: No URL provided"
-        
-        try:
-            response = rq.get(self["link"])
-            response.raise_for_status()
-            self.html = response.text
-            return None
-        except rq.exceptions.RequestException as error:
-            return f"Request error: {error}"
-        except Exception as error:
-            return f"Unexpected error: {error}"
-    
-    def get_content(self):
-        self.get_html()
-        scrapper = HTML()
-        scrapper.pretty_print()
-        self["content"] = scrapper.get_content()
+    def update_content(self):
+        """Updates content by scraping from stored URL"""
+        url = self.get("link", '')
+        html_parser = HTMLParser(url)
+        html_parser.scrape_content()
+        self["content"] = html_parser.get_content()
 
     def print_article(self) -> None:
         """Prints the article values in a beautiful way"""
