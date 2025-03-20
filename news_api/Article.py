@@ -1,9 +1,9 @@
 import json as js
 import requests as rq
-import bs4
+from HTML_scrapper import HTML
 
 class Article(dict):
-    def scrape_content(self) -> (str|None):
+    def get_html(self) -> (str|None):
         """
         Scrapes content from the url stored in "link".
 
@@ -18,14 +18,18 @@ class Article(dict):
         try:
             response = rq.get(self["link"])
             response.raise_for_status()
-            soup = bs4.BeautifulSoup(response.text, 'html.parser')
-            text = soup.get_text(separator=' ', strip=True)
-            self["content"] = text
+            self.html = response.text
             return None
         except rq.exceptions.RequestException as error:
             return f"Request error: {error}"
         except Exception as error:
             return f"Unexpected error: {error}"
+    
+    def get_content(self):
+        self.get_html()
+        scrapper = HTML()
+        scrapper.pretty_print()
+        self["content"] = scrapper.get_content()
 
     def print_article(self) -> None:
         """Prints the article values in a beautiful way"""
