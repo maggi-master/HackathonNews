@@ -1,9 +1,35 @@
 
+
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCzNPOIvNkGb_mXK1obLRRmb3bpJYc-QKY",
+  authDomain: "nyhetsprosjekt.firebaseapp.com",
+  projectId: "nyhetsprosjekt",
+  storageBucket: "nyhetsprosjekt.firebasestorage.app",
+  messagingSenderId: "20490355410",
+  appId: "1:20490355410:web:f06588ed2e96e6f298a30b",
+  measurementId: "G-T51P8D3EZ9"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+
+
 const takkemeldingEl = document.querySelector("#takkemelding")
 const emailEl = document.querySelector("#email")
 const abonnerEl = document.querySelector("#abonnerKnapp")
 const params1 = createMap()
-console.log(params1)
+
 
 
 //transformData()
@@ -29,6 +55,8 @@ function getInfo() {
     takkemeldingEl.textContent = `thank you for logging into Nova, and to verify is this your email?`;
     emailEl.textContent = `${params1.get("email")}`
 } //Etter verfiy email, lagre email i database
+
+
 
 
 
