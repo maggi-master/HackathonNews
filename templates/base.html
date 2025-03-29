@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hva skjer'a verden{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="header">
+        <h2>Hva skjer'a verden</h2>
+        <nav>
+            <a href="/login">Logg inn</a>
+            <a href="/register">Registrer</a>
+        </nav>
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

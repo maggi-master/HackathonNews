@@ -1,0 +1,74 @@
+/* Generelle stiler for index */
+.intro {
+    text-align: center;
+    margin-top: 80px;
+    padding: 20px;
+}
+
+.intro h1 {
+    font-size: 2.5em;
+    color: #2c3e50;
+}
+
+.intro p {
+    font-size: 1.2em;
+    color: #555;
+}
+
+.setup-guide {
+    text-align: center;
+    margin: 50px auto;
+    max-width: 800px;
+}
+
+.setup-guide h2 {
+    font-size: 2em;
+    color: #2c3e50;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.step {
+    flex: 1;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.step h3 {
+    color: #34495e;
+    font-size: 1.5em;
+}
+
+.step p {
+    font-size: 1em;
+    color: #666;
+}
+
+.cta {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.cta button {
+    background: #2980b9;
+    color: white;
+    font-size: 1.2em;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.cta button:hover {
+    background: #1f618d;
+}

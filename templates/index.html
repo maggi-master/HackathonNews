@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Hva skjer'a verden{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="intro">
+    <h1>Ditt personlige nyhetsbrev!</h1>
+    <p>Vi bruker avanserte KI-algoritmer for å finne de nyhetene du faktisk vil lese.</p>
+</div>
+
+<div class="setup-guide">
+    <h2>Kom i gang på 1-2-3!</h2>
+    <div class="steps">
+        <div class="step">
+            <h3>Lag bruker</h3>
+            <p>Registrer en konto.</p>
+        </div>
+        <div class="step">
+            <h3>Konfigurer</h3>
+            <p>Velg blant hundrevis av kategorier for å finne det som passer deg.</p>
+        </div>
+        <div class="step">
+            <h3>Opplev</h3>
+            <p>Motta nyhetsbrev skreddersydd etter dine interesser!</p>
+        </div>
+    </div>
+</div>
+
+<div class="cta">
+    <button>Sett i gang</button>
+</div>
+{% endblock %}

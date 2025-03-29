@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innstillinger</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+</head>
+<body>
+    <div class="header">
+        <h2>Brukerinnstillinger</h2>
+        <nav>
+            <a href="/logout">Logg ut</a>
+        </nav>
+    </div>
+
+    <div class="settings-container">
+        <h3>Rediger profilen din</h3>
+        <form id="settings-form">
+            <label for="email">E-post</label>
+            <input type="email" id="email" value="{{ user['email'] }}" disabled><br>
+
+            <label for="tags">Tags</label>
+            <input type="text" id="tags" value="{{ ', '.join(user['tags']) if user['tags'] else '' }}"><br>
+
+            <label for="display_name">Display Name</label>
+            <input type="text" id="display_name" value="{{ user['display_name'] or '' }}"><br>
+
+            <button type="submit">Oppdater innstillinger</button>
+        </form>
+    </div>
+
+</body>
+</html>
