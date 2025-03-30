@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, jsonify, session, flash, redirect, url_for
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from database import ServerFirebaseConfig, ClientFirebaseConfig, FirebaseHandler
-from firebase_admin import auth
+from firebase_admin import auth, exceptions
 import os
 
 app = Flask(__name__)
@@ -9,7 +9,7 @@ app.secret_key = os.urandom(24)
 config_db = ServerFirebaseConfig()
 db = FirebaseHandler(config_db)
 
-@app.route('/firebase-config')
+@app.route('/firebase-config', methods=['POST'])
 def get_firebase_config():
     client_config = ClientFirebaseConfig()
     return jsonify(client_config.get_credentials())
@@ -20,24 +20,28 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    feedback = None
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        try:
-            user_record = auth.create_user(email=email, password=password)
-            user_id = user_record.uid
-            db.write_user_data(user_id, {
-                "email":email,
-                "tags":[],
-                "verified":False
-            })
-            flash('Registration successful! Please log in.', 'success')
-            return redirect(url_for('login'))
-        except Exception as e:
-            flash(f'Error: {str(e)}', 'error')
-            return redirect(url_for('register'))
-
-    return render_template('register.html')
+        password2 = request.form['password2']
+        if password != password2:
+            feedback = {"type":"error", "message":"Begge passord må være like"}
+        else:
+            try:
+                user_record = auth.create_user(email=email, password=password)
+                user_id = user_record.uid
+                db.write_user_data(user_id, {
+                    "email": email,
+                    "tags": [],
+                    "verified": False
+                })
+                feedback = {"type":"success", "message": "Bruker opprettet"}
+            except ValueError:
+                feedback = {"type":"error", "message":"Ugyldig email eller passord (minimum 6 tegn)."}
+            except exceptions.FirebaseError:
+                feedback = {"type":"error", "message":"Bruker opptatt"}
+    return render_template('register.html', feedback=feedback)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -63,7 +67,6 @@ def settings():
     user_id = session.get('user')
     if not user_id:
         return redirect(url_for('login'))
-
     user = db.get_user_data(user_id)
     return render_template('settings.html', user=user)
 
