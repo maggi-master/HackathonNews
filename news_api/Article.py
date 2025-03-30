@@ -15,4 +15,4 @@ class Article(dict):
 
     def __str__(self):
         """Returns the article values in a beautiful way"""
-        return js.dumps(dict(self), sort_keys=True, indent=4)
+        return js.dumps(dict(self), sort_keys=True, indent=4, ensure_ascii=False)
