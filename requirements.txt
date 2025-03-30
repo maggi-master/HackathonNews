@@ -1,3 +1,7 @@
 python-dotenv
 openai
 scikit-learn
+python-dotenv
+feedparser
+bs4
+requests
