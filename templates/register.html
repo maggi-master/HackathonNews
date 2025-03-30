@@ -3,7 +3,7 @@
 {% block title %}Registrer bruker - Hva skjer'a verden{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -11,22 +11,19 @@
     <h3>Registrer bruker</h3>
     <form method="POST">
         <label for="email">E-post</label>
-        <input type="email" id="email" name="email" required>
-
+        <input type="email" id="email" name="email" placeholder="Eksempel@gmail.com" required>
         <label for="password">Passord</label>
-        <input type="password" id="password" name="password" required>
-
+        <input type="password" id="password" name="password" placeholder="Passord" required>
+        <label for="password">Bekreft passord</label>
+        <input type="password" id="password2" name="password2" placeholder="Passord*" required>
+        {% if feedback %}
+            {% if feedback.type == 'success' %}
+                <p class="success-text">{{feedback.message}}</p>
+            {% elif feedback.type == 'error' %}
+                <p class="error-text">{{feedback.message}}</p>
+            {% endif %}
+        {% endif %}
         <button type="submit">Registrer</button>
     </form>
 </div>
-
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <ul>
-            {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endwith %}
 {% endblock %}

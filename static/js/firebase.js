@@ -1,7 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js';
 import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
 
-// Fetch Firebase config from the backend
 fetch('/firebase-config')
     .then(response => response.json())
     .then(firebaseConfig => {
@@ -12,7 +11,8 @@ fetch('/firebase-config')
             event.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = '';
             signInWithEmailAndPassword(auth, email, password)
                 .then(async (userCredential) => {
                     const user = userCredential.user;
@@ -28,12 +28,16 @@ fetch('/firebase-config')
                         if (data.success) {
                             window.location.href = '/settings';
                         } else {
-                            alert('Authentication failed!');
+                            errorMessage.textContent = 'Klarte ikke verifisere';
+                            errorMessage.style.color = 'red';
                         }
                     })
                     .catch(error => console.error('Error sending token:', error));
                 })
-                .catch(error => alert('Login failed: ' + error.message));
+                .catch(error => {
+                    errorMessage.textContent = 'Email eller passord er feil';
+                    errorMessage.style.color = 'red';
+                });
         });
     })
     .catch(error => console.error('Error fetching Firebase config:', error));

@@ -84,3 +84,13 @@ button:focus {
         font-size: 14px;
     }
 }
+
+input::placeholder {
+    color: #aaa;
+    font-style: italic;
+}
+
+.error-text {
+    color: red;
+    font-size: 14px;
+}
