@@ -9,10 +9,6 @@ class Article(dict):
         html_parser.scrape_content()
         self["content"] = html_parser.get_content()
 
-    def print_article(self) -> None:
-        """Prints the article values in a beautiful way"""
-        print(self)
-
     def __str__(self):
         """Returns the article values in a beautiful way"""
         return js.dumps(dict(self), sort_keys=True, indent=4, ensure_ascii=False)

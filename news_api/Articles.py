@@ -4,7 +4,7 @@ from .Article import Article
 
 class Articles:
     def __init__(self) -> None:
-        self._articles = []
+        self._articles:list[Article] = []
         self._parse_feeds()
 
     def _parse_feed(self, source_name:str, feed:str) -> None:
@@ -27,4 +27,4 @@ class Articles:
     def print_articles(self) -> None:
         """Prints out each article"""
         for article in self._articles:
-            article.print_article()
+            print(article)
