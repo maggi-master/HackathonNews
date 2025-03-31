@@ -36,11 +36,11 @@ def register():
                     "tags": [],
                     "verified": False
                 })
-                feedback = {"type":"success", "message": "Bruker opprettet"}
+                feedback = {'type':"success", 'message': "Bruker opprettet"}
             except ValueError:
-                feedback = {"type":"error", "message":"Ugyldig email eller passord (minimum 6 tegn)."}
+                feedback = {'type':"error", 'message':"Ugyldig e-post eller passord (minimum 6 tegn)."}
             except exceptions.FirebaseError:
-                feedback = {"type":"error", "message":"Bruker opptatt"}
+                feedback = {'type':"error", 'message':"Bruker opptatt"}
     return render_template('register.html', feedback=feedback)
 
 @app.route("/login", methods=["GET", "POST"])
@@ -58,9 +58,9 @@ def validate_token():
         uid = decoded_token['uid']
 
         session['user'] = uid
-        return jsonify({'success': True, 'uid': uid}), 200
+        return 'True'
     except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 400
+        return 'False'
 
 @app.route('/settings')
 def settings():
@@ -71,4 +71,4 @@ def settings():
     return render_template('settings.html', user=user)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
