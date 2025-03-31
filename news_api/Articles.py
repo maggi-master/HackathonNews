@@ -2,7 +2,7 @@ import feedparser as fp
 from .rss_feeds import RSS_FEEDS
 from .Article import Article
 
-class RSS:
+class Articles:
     def __init__(self) -> None:
         self._articles = []
         self._parse_feeds()
