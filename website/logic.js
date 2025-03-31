@@ -1,24 +1,102 @@
+const themeBoxEl = document.querySelector("#temabox")
+const themes = [
+    "Politikk",
+    "Økonomi",
+    "Sport",
+    "Kultur",
+    "Teknologi",
+    "Helse",
+    "Utdanning",
+    "Miljø",
+    "Kriminalitet",
+    "Samfunn",
+    "Internasjonale nyheter",
+    "Vitenskap",
+    "Underholdning",
+    "Reise",
+    "Mat og drikke",
+    "Arbeidsmarked",
+    "Boligmarked",
+    "Transport",
+    "Klimaendringer",
+    "Forskning",
+    "Digitalisering",
+    "Medier og journalistikk",
+    "Sosiale medier",
+    "Energipolitikk",
+    "Industri og næringsliv",
+    "Forsvar og sikkerhet",
+    "Internett og personvern",
+    "Teknologiutvikling",
+    "Ulykker og katastrofer",
+    "Naturkatastrofer",
+    "Terrorisme",
+    "Flyktninger og migrasjon",
+    "Utenrikspolitikk",
+    "Lokale nyheter",
+    "Kunst og design",
+    "Litteratur",
+    "Musikk",
+    "Film og TV",
+    "Spill og e-sport",
+    "Trender og livsstil",
+    "Familie og oppvekst",
+    "Psykisk helse",
+    "Medisin og behandling",
+    "Dyr og naturvern",
+    "Religiøse spørsmål",
+    "Menneskerettigheter",
+    "Kriger og konflikter",
+    "Teknologiske innovasjoner",
+    "Historie og arkeologi",
+    "Kunstig intelligens",
+    "Personlig økonomi"
+  ]
+loadBoxes()
 //const { ChatSession } = require("firebase/vertexai")
 const abonnerEl = document.querySelector("#abonnerKnapp")
 const gmailEl = document.querySelector("#gmail")
 const chosenThemesEl = document.querySelector("#chosenThemes")
 const themesEl = document.querySelectorAll(".tema")
+const searchEl = document.querySelector("#search")
 
 
+
+searchEl.addEventListener("input", search)
 abonnerEl.addEventListener("click", abonner)
 for (let i = 0; i < themesEl.length; i++) {
     themesEl[i].addEventListener("click", createDiv)
 }
 
 
+function loadBoxes() {//Loads the themes in at the start of ur code. 
+    for (let i = 0; i < themes.length; i++) {
+        let temaBox = document.createElement("div")
+        temaBox.classList.add("tema")
+        temaBox.innerHTML = `${themes[i]}`
+        themeBoxEl.appendChild(temaBox)
+    }
+}
+
+function search() {//Lets you search through the themes
+    let søket = searchEl.value.toLowerCase()
+    for (let i = 0; i < themesEl.length; i++) {
+        let text = themesEl[i].innerHTML.toLowerCase()
+        if (text.includes(søket)) {
+            themesEl[i].classList.remove("notSearched")
+        } else {
+            themesEl[i].classList.add("notSearched")
+        }
+    }
+}
+
 
 function abonner() {
-    console.log("Gmail:", gmailEl.value)//gmailen som kan bli lagret i database, men må lage en funksjon som sjekker om det er en gyldig gmail.
     let lagredeTema = LagreTema()
     console.log("Temaer:", lagredeTema)
 }
 
-function LagreTema() {
+function LagreTema() {//Saves the themes the user has chosen
     let newBoxList = document.querySelectorAll(".newBox")
     let stringBox = []
     for (let i = 0; i < newBoxList.length; i++) {
@@ -28,37 +106,15 @@ function LagreTema() {
 }
 
 
-
+/*
 function createDiv(e) {
-    let newBoxList = document.querySelectorAll(".newBox")
-    let go = true
     let clickeddoor = e.target
-    for (let i = 0; i < newBoxList.length; i++) {
-        //check if it has same name as another box
-        if (newBoxList[i].innerHTML == clickeddoor.innerHTML) {
-            go = false
-        }
-    }
-    if (go) {
+    if (clickeddoor.classList.contains("newBox")) {
         console.log("can make another")
-        let newBox = document.createElement("div")
-        newBox.className = "newBox"
-        newBox.textContent = clickeddoor.innerHTML
-        chosenThemesEl.appendChild(newBox)
-        updateNewBoxes() //oppdaterer evenlistener etter lagt til box
-    } else {console.log("couldnt make another of the same")}
+        clickeddoor.classList.remove("newBox")
+        clickeddoor.classList.add("tema")
+    } else {
+        clickeddoor.classList.add("newBox"); clickeddoor.classList.remove("tema")};
     
 }
-
-function updateNewBoxes() {
-    let boxesEl = document.querySelectorAll(".newBox")
-    for (let i = 0; i < boxesEl.length; i++) {
-        boxesEl[i].addEventListener("click", removeDiv)
-    }
-    
-}
-
-function removeDiv(e) {
-    chosenThemesEl.removeChild(e.target)
-}
-
+*/
