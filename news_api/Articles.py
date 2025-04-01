@@ -1,6 +1,4 @@
 import feedparser as fp
-import os
-from dotenv import load_dotenv
 import openai
 from .rss_feeds import RSS_FEEDS
 from .Article import Article, np
@@ -9,10 +7,6 @@ class Articles:
     def __init__(self) -> None:
         self._articles:list[Article] = []
         self._parse_feeds()
-        # Load environment variables from .env file
-        load_dotenv()
-        # Set your OpenAI API key
-        openai.api_key = os.getenv("OPENAI_API_KEY")
 
     def _parse_feed(self, source_name:str, feed:str) -> None:
         """Parses single feed and appends to articles list"""
