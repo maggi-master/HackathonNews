@@ -21,7 +21,7 @@ class Articles:
             article = Article(entry)
             article.update({"source": source_name})
             self._articles.append(article)
-    
+
     def _parse_feeds(self) -> None:
         """Parses alle the feeds from RSS_FEEDS variable using the parse_feed function"""
         for source_name, feed in RSS_FEEDS.items():
@@ -35,10 +35,10 @@ class Articles:
         """Prints out each article"""
         for article in self._articles:
             print(article)
-    
+
     def _filter_articles(self) -> None:
         self._articles = [article for article in self._articles if article["summary"] != ""]
-    
+
     def embedd_articles(self):
         """Assigns a vector to all the articles based on the summary of the article using openai embedding"""
         self._filter_articles()

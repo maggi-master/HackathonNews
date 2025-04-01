@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests as rq
 import logging as log
 
-class HTMLParser():
+class HTMLParser:
     def __init__(self, url:str=None) -> None:
         self._logger = log.getLogger(__name__)
         self._logger.setLevel(log.ERROR)
@@ -61,7 +61,7 @@ class HTMLParser():
 
     def print_html(self) -> None:
         """Prints out HTML for debugging"""
-        print(self)
+        print(self._html)
 
     def __str__(self) -> str:
         return self._soup.prettify()

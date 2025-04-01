@@ -1,7 +1,6 @@
 import json as js
 from .html_parser import HTMLParser
 import numpy as np
-from numpy.typing import NDArray
 
 class Article(dict):
     def update_content(self):
