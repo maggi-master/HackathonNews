@@ -54,3 +54,4 @@ class Articles:
             for article, similarity in zip(self._articles, tagSimilarities):
                 if similarity>=threshold:
                     articles.append(article)
+        return articles

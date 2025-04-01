@@ -2,8 +2,9 @@ from .Tag import Tag, np
 import openai
 
 class Tags:
-    def __init__(self):
-        self.tags:list[Tag]
+    def __init__(self, tags:list[str]):
+        self.tags:list[Tag] = [Tag(tag) for tag in tags]
+        self.embedd_tags()
 
     def embedd_tags(self, model="text-embedding-3-small"):
         """Assigns a vector to all the tags using openai embedding"""
