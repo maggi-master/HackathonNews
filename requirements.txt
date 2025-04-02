@@ -1,5 +1,0 @@
-openai
-python-dotenv
-feedparser
-bs4
-requests
