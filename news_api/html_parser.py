@@ -42,7 +42,15 @@ class HTMLParser:
             self._logger.error(f"Unknown content type, cannot parse type {self._content_type}")
 
         if self._domain == "www.nrk.no":
-            self._domain_nrk()
+            self._parse_content("article-body lp_articlebody text-body text-body-sans-serif container-widget-content nostack cf")
+        elif self._domain == "www.dagbladet.no":
+            self._parse_content("bodytext large-12 small-12 medium-12")
+        elif self._domain == "www.vg.no":
+            self._parse_content("article-body")
+        elif self._domain == "www.reuters.com":
+            self._parse_content("article-body__content__17Yit")
+        elif self._domain == "e24.no":
+            self._parse_content("article-wrapper-eM4V3y")
         else:
             self._logger.error(f"Unknown domain, cannot parse from {self._domain}")
 
@@ -55,13 +63,19 @@ class HTMLParser:
             domain = domain.split("/")[0]
         return domain
 
-    def _domain_nrk(self):
-        """Parses from domain nrk"""
-        self._content = self._soup.get_text()
+    def _parse_content(self, text_body_name):
+        article = self._soup.find("div", class_=text_body_name)
+        if article:
+            self._content = article.get_text(separator=" ", strip=True)
+            self._content = self._content.replace("\n", " ")
+            self._content = " ".join(self._content.split())
+        else:
+            self._logger.error(f"Could not find article content for {self._url}")
+
 
     def print_html(self) -> None:
         """Prints out HTML for debugging"""
-        print(self._html)
+        print(self)
 
     def __str__(self) -> str:
         return self._soup.prettify()
