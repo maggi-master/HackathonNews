@@ -1,19 +1,41 @@
 import news_api
-import logging as log
+from database import ServerFirebaseConfig, FirebaseHandler
+import smtplib
+from dotenv import load_dotenv
+import os
+import smtplib
+import ssl
+from email.message import EmailMessage
+load_dotenv()
 
-# Test for the rss module
-log.basicConfig(level=log.ERROR)
-
+config = ServerFirebaseConfig()
+database = FirebaseHandler(config)
+user_data = database.get_all_users() #list[dict]
 news = news_api.FetchNews()
-tags = news_api.Tags(["Internasjonal politikk", "Russland", "Ukraina", "Europa"])
+context = ssl.create_default_context()
 
-articles = news.search(tags)
-print(f"Fant {len(articles)} relvante artikler av totalt {len(news)} artikler basert på disse temane {tags}")
+with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
+    for user in user_data:
+        tags = news_api.Tags(user["tags"])
+        articles = news.search(tags)
+        print(f"Fant {len(articles)} relvante artikler av totalt {len(news)} artikler basert på disse temane {tags}")
 
-analyzer = news_api.ArticleCollection(articles)
-email = analyzer.generate_email()
+        analyzer = news_api.ArticleCollection(articles)
+        BODY = analyzer.generate_email()
+        print(BODY)
+        
+        TO_EMAIL = user["email"]
+        SUBJECT = "Dagens Nyheter"
+        EMAIL_SENDER = os.getenv("EMAIL_SENDER")
+        EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
-with open("output.txt", "w") as file:
-    file.write(email)
-
-print(email)
+        smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
+        em = EmailMessage()
+        em["From"] = EMAIL_SENDER
+        em["To"] = TO_EMAIL
+        em["Subject"] = SUBJECT
+        em.set_content(BODY)
+        
+        #smtp.sendmail(EMAIL_SENDER, TO_EMAIL, em.as_string())
+        print(f"Email Sendt {TO_EMAIL}")
+        
