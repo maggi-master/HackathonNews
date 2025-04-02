@@ -6,3 +6,4 @@ feedparser
 bs4
 requests
 firebase-admin
+email-validator
