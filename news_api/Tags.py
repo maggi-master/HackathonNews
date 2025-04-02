@@ -8,13 +8,13 @@ class Tags:
 
     def embedd_tags(self, model="text-embedding-3-small"):
         """Assigns a vector to all the tags using openai embedding"""
-        tags = [tag.tag for tag in self.tags]
+        tags = [tag.tag for tag in self]
         embeddings = openai.embeddings.create(input = tags, model=model).data
-        for embedding, article in zip(embeddings, self.tags):
+        for embedding, article in zip(embeddings, self):
             article.vector = np.array(embedding.embedding)
     
     def __str__(self):
-        return str([tag.tag for tag in self.tags])
+        return str([tag.tag for tag in self])
     
     def __iter__(self):
         return iter(self.tags)

@@ -30,24 +30,24 @@ class FetchNews:
 
     def print_articles(self) -> None:
         """Prints out each article"""
-        for article in self._articles:
+        for article in self:
             print(article)
 
     def _filter_articles(self) -> None:
-        self._articles = [article for article in self._articles if article["summary"] != ""]
+        self._articles = [article for article in self if article["summary"] != ""]
 
     def _embedd_articles(self, model="text-embedding-3-small"):
         """Assigns a vector to all the articles based on the summary of the article using openai embedding"""
         self._filter_articles()
-        summaries = [article["summary"] for article in self._articles]
+        summaries = [article["summary"] for article in self]
         embeddings = openai.embeddings.create(input = summaries, model=model).data
-        for embedding, article in zip(embeddings, self._articles):
+        for embedding, article in zip(embeddings, self):
             article.vector = np.array(embedding.embedding)
     
     def search(self, tags:Tags, threshold:float = 0.3) -> list[Article]:
         """Retuns list of articles if the maximum cosine of the vectors to the articles and tags are equal or greater than the threshold"""
-        articlesV = np.array([article.vector for article in self._articles])
-        tagsV = np.array([tag.vector for tag in tags.tags])
+        articlesV = np.array([article.vector for article in self])
+        tagsV = np.array([tag.vector for tag in tags])
         similarities = cosine_similarity(articlesV, tagsV)
         return [article for article, similarity in zip(self._articles, similarities) if max(similarity) >= threshold] #returns articles where any tag simularity is over the thershold
 
