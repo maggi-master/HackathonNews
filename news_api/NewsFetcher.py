@@ -43,13 +43,19 @@ class FetchNews:
         embeddings = openai.embeddings.create(input = summaries, model=model).data
         for embedding, article in zip(embeddings, self):
             article.vector = np.array(embedding.embedding)
-    
+
     def search(self, tags:Tags, threshold:float = 0.3) -> list[Article]:
         """Retuns list of articles if the maximum cosine of the vectors to the articles and tags are equal or greater than the threshold"""
         articlesV = np.array([article.vector for article in self])
         tagsV = np.array([tag.vector for tag in tags])
         similarities = cosine_similarity(articlesV, tagsV)
-        return [article for article, similarity in zip(self._articles, similarities) if max(similarity) >= threshold] #returns articles where any tag simularity is over the thershold
+        articles = []
+        for article, similarity in zip(self._articles, similarities):
+            if max(similarity) >= threshold:
+                if "content" not in article: #Checks if already scraped the website for the content
+                    article.update_content()
+                articles.append(article)
+        return articles
 
     def __iter__(self):
         return iter(self._articles)
