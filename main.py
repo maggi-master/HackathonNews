@@ -4,8 +4,8 @@ import logging as log
 # Test for the rss module
 log.basicConfig(level=log.ERROR)
 
-api = news_api.Articles()
-tags = news_api.Tags(["internasjonal politikk", "norge", "russland"])
+news = news_api.FetchNews()
+tags = news_api.Tags(["internasjonal politikk", "norge", "russland", "Ukraina", "Europa"])
 
-for article in api.search(tags):
-    print(article)
+articles = news.search(tags)
+print(f"Fant {len(articles)} relvante artikler av totalt {len(news)} artikler basert på disse temane {tags}")
