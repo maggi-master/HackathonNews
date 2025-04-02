@@ -6,7 +6,6 @@ class ArticleCollection:
         self._articles = articles
         self.important_keys = ['title', 'content', 'author', 'published', 'source', 'link']
 
-
     def generate_email(self, model="gpt-4o-mini") -> str:
         """
         Constructs a prompt using the provided articles, asking ChatGPT to analyze,
@@ -19,20 +18,21 @@ class ArticleCollection:
                 formatted_articles += str(article.get(key, ''))+"\n"
         
         promt = f"""
-Analyser og oppsummer følgende nyhetsartikler. Vær kritisk i din analyse og vurder vinkling, troverdighet og mulige mangler ved dekningen.
+Analyser og oppsummer følgende nyhetsartikler. Vurder kritisk vinkling, troverdighet og mulige mangler ved dekningen.
 
-Start med her er Nyhetene for idag, og slutt med en kildeliste.
+Nyhetene for i dag:
+Oppsummer de viktigste hendelsene og trekk frem eventuelle motstridende synspunkter. Syntetiser informasjonen på tvers av artiklene for å gi en helhetlig oversikt over de ulike temaene.
 
-Når du oppsummerer, trekk ut de viktigste poengene og eventuelle motstridende synspunkter presentert i artiklene.
+Kategoriser nyhetene etter tema (f.eks. politikk, økonomi, teknologi, vitenskap, kultur).
+Bruk hyperlenker til artiklene direkte i teksten for å referere til kilder.
+Analyser vinkling ved å sammenligne dekningen fra ulike kilder, peke på skjevheter og identifisere eventuelle manglende perspektiver.
+Vær presis og objektiv, men også kritisk der det er nødvendig.
 
-**Referer tydelig** til de spesifikke artiklene (bruk tittel, kilde eller lenke/identifikator som oppgitt) når du henter informasjon eller kritikk.
+Kildeliste:
+Oppgi en liste over de analyserte artiklene med deres titler og lenker.
 
-Ikke bare list opp hva hver artikkel sier; syntetiser informasjonen til en sammenhengende oversikt over temaet(ene) som dekkes.
-
-Her er den relevante informasjonen fra artiklene:
-
+#### Artikler til analyse:
 {formatted_articles}
-
 """
 
         messages = [
