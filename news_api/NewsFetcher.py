@@ -5,7 +5,7 @@ from .Article import Article, np
 from sklearn.metrics.pairwise import cosine_similarity
 from .Tags import Tags
 
-class NewsFetcher:
+class FetchNews:
     def __init__(self) -> None:
         self._articles:list[Article] = []
         self._parse_feeds()
@@ -55,3 +55,9 @@ class NewsFetcher:
                 if similarity>=threshold:
                     articles.append(article)
         return articles
+
+    def __iter__(self):
+        return iter(self._articles)
+
+    def __len__(self):
+        return len(self._articles)

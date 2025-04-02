@@ -12,3 +12,12 @@ class Tags:
         embeddings = openai.embeddings.create(input = tags, model=model).data
         for embedding, article in zip(embeddings, self.tags):
             article.vector = np.array(embedding.embedding)
+    
+    def __str__(self):
+        return str([tag.tag for tag in self.tags])
+    
+    def __iter__(self):
+        return iter(self.tags)
+    
+    def __len__(self):
+        return len(self.tags)
