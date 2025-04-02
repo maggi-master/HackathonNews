@@ -37,5 +37,4 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
         em.set_content(BODY)
         
         #smtp.sendmail(EMAIL_SENDER, TO_EMAIL, em.as_string())
-        print(f"Email Sendt {TO_EMAIL}")
-        
+        print(f"Email Sendt to {TO_EMAIL}")
