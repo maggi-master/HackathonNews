@@ -45,7 +45,7 @@ class FetchNews:
             article.vector = np.array(embedding.embedding)
     
     def search(self, tags:Tags, threshold:float = 0.3) -> list[Article]:
-        """Retuns list of articles if the cosine of the vectors to the article tags are equal or greater than the threshold"""
+        """Retuns list of articles if the maximum cosine of the vectors to the articles and tags are equal or greater than the threshold"""
         articlesV = np.array([article.vector for article in self._articles])
         tagsV = np.array([tag.vector for tag in tags.tags])
         similarities = cosine_similarity(articlesV, tagsV)
