@@ -14,9 +14,9 @@ class ArticleCollection:
         """
         formatted_articles = ""
         for articleIndex, article in enumerate(self, start=1):
-            formatted_articles += f"Artikkel nr. {articleIndex}"
+            formatted_articles += f"\nArtikkel nr. {articleIndex}\n"
             for key in self.important_keys:
-                formatted_articles+= article[key]+"\n"
+                formatted_articles += str(article.get(key, ''))+"\n"
         
         promt = f"""
 Analyser og oppsummer følgende nyhetsartikler. Vær kritisk i din analyse og vurder vinkling, troverdighet og mulige mangler ved dekningen.
@@ -40,14 +40,13 @@ Her er den relevante informasjonen fra artiklene:
             {"role": "user", "content": promt}
         ]
 
-        """response = openai.chat.completions.create(
+        response = openai.chat.completions.create(
             model=model,
             messages=messages,
             temperature=0.7  # Adjust temperature for creativity vs. determinism
         )
 
-        result = response.choices[0].message['content']
-        return result"""
+        return response.choices[0].message.content
 
     def __iter__(self):
         return iter(self._articles)

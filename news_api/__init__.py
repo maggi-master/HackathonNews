@@ -1,5 +1,6 @@
 from .Tags import Tags
 from .NewsFetcher import FetchNews
+from .NewsAnalyzer import ArticleCollection
 import os
 from dotenv import load_dotenv
 import openai
