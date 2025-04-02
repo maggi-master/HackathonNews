@@ -1,34 +1,35 @@
-<!DOCTYPE html>
-<html lang="no">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Innstillinger</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-</head>
-<body>
-    <div class="header">
-        <h2>Brukerinnstillinger</h2>
-        <nav>
-            <a href="/logout">Logg ut</a>
-        </nav>
-    </div>
+{% extends "base.html" %}
 
-    <div class="settings-container">
-        <h3>Rediger profilen din</h3>
-        <form id="settings-form">
-            <label for="email">E-post</label>
-            <input type="email" id="email" value="{{ user['email'] }}" disabled><br>
+{% block title %}Innstillinger{% endblock %}
 
-            <label for="tags">Tags</label>
-            <input type="text" id="tags" value="{{ ', '.join(user['tags']) if user['tags'] else '' }}"><br>
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='settings.css') }}">
+{% endblock %}
 
-            <label for="display_name">Display Name</label>
-            <input type="text" id="display_name" value="{{ user['display_name'] or '' }}"><br>
+{% block content %}
+<div class="tag-container">
+    <h3>Finn emner</h3>
+    <p>Finn emner og trykk på de for å legge det til.</p>
+    <input type="text" id="search" placeholder="Søk her">
+    <div id="tags-container"></div>
 
-            <button type="submit">Oppdater innstillinger</button>
-        </form>
-    </div>
+    <h3>Valgte emner</h3>
+    <p>Disse emnene er utgangspunktet for nyhetsbrevet du vil motta. Du kan trykke på emnene for å fjerne de.</p>
+    <div id="selected-tags" class="selected-tags"></div>
+</div>
+<div class="other-container">
+    <h3>Annet</h3>
+    <label class="checkbox-label">
+        <input type="checkbox" class="checkbox-input">
+        <span class="checkbox-text">Jeg ønsker å motta nyhetsbrev</span>
+    </label>
+</div>
+<div class="button-container">
+    <button id="save-button">Lagre preferanser</button>
+    <button id="delete-button">Slett bruker</button>
+</div>
 
-</body>
-</html>
+
+
+<script type="module" src="{{ url_for('static', filename='js/settings_utils.js') }}"></script>
+{% endblock %}

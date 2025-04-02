@@ -18,8 +18,8 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
     event.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    let errorMessage = document.getElementById('error-message');
-    errorMessage.textContent = '';
+    const errorMessageEl = document.getElementById('error-message');
+    errorMessageEl.textContent = '';
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const idToken = await userCredential.user.getIdToken();
@@ -33,10 +33,10 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
         if (validation === "True") {
             window.location.href = '/settings';
         } else {
-            errorMessage.textContent = 'Klarte ikke verifisere.';
+            errorMessageEl.textContent = 'Klarte ikke verifisere.';
         }
     } catch (error) {
-        let errorMessage = document.getElementById('error-message');
-        errorMessage.textContent = "Feil e-post eller passord";
+        const errorMessageEl = document.getElementById('error-message');
+        errorMessageEl.textContent = "Feil e-post eller passord";
     }
 });

@@ -56,19 +56,33 @@ def validate_token():
         id_token = data.get('idToken')
         decoded_token = auth.verify_id_token(id_token)
         uid = decoded_token['uid']
-
         session['user'] = uid
         return 'True'
-    except Exception as e:
+    except Exception:
         return 'False'
 
-@app.route('/settings')
+@app.route('/user-data', methods=['POST'])
+def get_data():
+    user_id = session.get('user')
+    user_data = db.get_user_data(user_id)
+    return jsonify(user_data)
+
+@app.route('/settings', methods=["GET", "POST"])
 def settings():
     user_id = session.get('user')
     if not user_id:
         return redirect(url_for('login'))
-    user = db.get_user_data(user_id)
-    return render_template('settings.html', user=user)
+    return render_template('settings.html')
+
+@app.route('/save-data', methods=['POST'])
+def save_data():
+    try:
+        user_id = session.get('user')
+        data = request.get_json()
+        db.write_user_data(user_id, data)
+        return 'True'
+    except Exception:
+        return 'False'
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0",)
