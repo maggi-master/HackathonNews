@@ -1,5 +1,5 @@
 from .Tags import Tags
-from .Articles import Articles
+from .NewsFetcher import NewsFetcher
 import os
 from dotenv import load_dotenv
 import openai

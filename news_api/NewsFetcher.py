@@ -5,7 +5,7 @@ from .Article import Article, np
 from sklearn.metrics.pairwise import cosine_similarity
 from .Tags import Tags
 
-class Articles:
+class NewsFetcher:
     def __init__(self) -> None:
         self._articles:list[Article] = []
         self._parse_feeds()
@@ -46,11 +46,11 @@ class Articles:
     
     def search(self, tags:Tags, threshold:float = 0.97) -> list[Article]:
         articlesV = np.array([article.vector for article in self._articles])
-        tagsV = np.array([tag.tag for tag in tags.tags])
+        tagsV = np.array([tag.vector for tag in tags.tags])
         similarities = cosine_similarity(tagsV, articlesV)
         
         articles = []
-        for tag, tagSimilarities in zip(tags, similarities):
+        for tagSimilarities in similarities:
             for article, similarity in zip(self._articles, tagSimilarities):
                 if similarity>=threshold:
                     articles.append(article)
