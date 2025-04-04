@@ -20,7 +20,9 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
             continue
         tags = news_api.Tags(user["tags"])
         tags.embedd_tags()
-        articles = news.search(tags)
+        articles = news.search(tags, 0.37)
+        if len(articles)==0:
+            continue
         print(f"Fant {len(articles)} relvante artikler av totalt {len(news)} artikler basert på disse temane {tags}")
 
         analyzer = news_api.ArticleCollection(articles, tags)
@@ -32,12 +34,12 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
         EMAIL_SENDER = os.getenv("EMAIL_SENDER")
         EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
-        #smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
+        smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
         em = EmailMessage()
         em["From"] = EMAIL_SENDER
         em["To"] = TO_EMAIL
         em["Subject"] = SUBJECT
         em.set_content(BODY)
         
-        #smtp.sendmail(EMAIL_SENDER, TO_EMAIL, em.as_string())
+        smtp.sendmail(EMAIL_SENDER, TO_EMAIL, em.as_string())
         print(f"Email Sendt to {TO_EMAIL}")
