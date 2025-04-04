@@ -1,10 +1,12 @@
 from .Article import Article
+from .Tags import Tags
 import openai
 
 class ArticleCollection:
-    def __init__(self, articles:list[Article]):
+    def __init__(self, articles:list[Article], tags:Tags):
         self._articles = articles
         self.important_keys = ['title', 'content', 'author', 'published', 'source', 'link']
+        self.tags = tags
 
     def generate_email(self, model="gpt-4o-mini") -> str:
         """
@@ -23,7 +25,7 @@ Analyser og oppsummer følgende nyhetsartikler. Vurder kritisk vinkling, troverd
 Nyhetene for i dag:
 Oppsummer de viktigste hendelsene og trekk frem eventuelle motstridende synspunkter. Syntetiser informasjonen på tvers av artiklene for å gi en helhetlig oversikt over de ulike temaene.
 
-Kategoriser nyhetene etter tema (f.eks. politikk, økonomi, teknologi, vitenskap, kultur).
+Kategoriser nyhetene etter temane {str(self.tags)}. Du kan kombinere temaer hvis de er relvante til hverandre. Du kan fjerne temaer hvis det ikke er noen nyheter om temaene. 
 Bruk hyperlenker til artiklene direkte i teksten for å referere til kilder.
 Analyser vinkling ved å sammenligne dekningen fra ulike kilder, peke på skjevheter og identifisere eventuelle manglende perspektiver.
 Vær presis og objektiv, men også kritisk der det er nødvendig.
