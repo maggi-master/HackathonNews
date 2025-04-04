@@ -84,6 +84,15 @@ def save_data():
     except Exception:
         return 'False'
 
+@app.route('/delete-data', methods=['POST'])
+def delete_data():
+    try:
+        user_id = session.get('user')
+        db.delete_user(user_id)
+        return 'True'
+    except Exception:
+        return 'False'
+    
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
     app.run(host='0.0.0.0', port=port, debug=False)

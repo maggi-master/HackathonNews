@@ -8,15 +8,15 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <div class="header">
+    <header class="header">
         <h1>Hva skjer'a verden</h1>
         <nav>
             <a href="/login">Logg inn</a>
             <a href="/register">Registrer</a>
         </nav>
-    </div>
-    <div class="content">
+    </header>
+    <section class="content">
         {% block content %}{% endblock %}
-    </div>
+    </section>
 </body>
 </html>
