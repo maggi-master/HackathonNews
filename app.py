@@ -45,7 +45,7 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if 'user' in session:
+    if session.get('user'):
         return redirect(url_for('settings'))
     return render_template('login.html')
 
