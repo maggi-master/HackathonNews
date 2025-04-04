@@ -89,6 +89,7 @@ def delete_data():
     try:
         user_id = session.get('user')
         db.delete_user(user_id)
+        session['user'] = None
         return 'True'
     except Exception:
         return 'False'
