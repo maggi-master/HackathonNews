@@ -1,5 +1,6 @@
 import feedparser as fp
 import openai
+import copy
 from .rss_feeds import RSS_FEEDS
 from .Article import Article, np
 from sklearn.metrics.pairwise import cosine_similarity
@@ -48,13 +49,23 @@ class FetchNews:
         """Retuns list of articles if the maximum cosine of the vectors to the articles and tags are equal or greater than the threshold"""
         articlesV = np.array([article.vector for article in self])
         tagsV = np.array([tag.vector for tag in tags])
-        similarities = cosine_similarity(articlesV, tagsV)
+        similaritiesMatrix = cosine_similarity(articlesV, tagsV)
         articles = []
-        for article, similarity in zip(self._articles, similarities):
-            if max(similarity) >= threshold:
-                if "content" not in article: #Checks if already scraped the website for the content
-                    article.update_content()
-                articles.append(article)
+        for article, similarities in zip(self._articles, similaritiesMatrix):
+            relvant = False
+            relvantTags = []
+            for tag, similarity in zip(tags, similarities):
+                if similarity >= threshold:
+                    relvant = True
+                    if "content" not in article: #Checks if already scraped the website for the content
+                        article.update_content()
+                    tagCopy = copy.deepcopy(tag)
+                    tagCopy.similarity = similarity
+                    relvantTags.append(tagCopy)
+            relvantArticle = Article(article)
+            relvantArticle.tags = Tags(relvantTags)
+            if relvant:
+                articles.append(relvantArticle)
         return articles
 
     def __iter__(self):

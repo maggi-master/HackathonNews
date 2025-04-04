@@ -1,11 +1,13 @@
 import json as js
-from .html_parser import HTMLParser
 import numpy as np
+from .html_parser import HTMLParser
+from .Tags import Tags
 
 class Article(dict):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.vector:np.ndarray = None
+        self.tags:Tags = None
     
     def update_content(self):
         """Updates content by scraping from stored URL"""
