@@ -16,6 +16,8 @@ context = ssl.create_default_context()
 
 with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
     for user in user_data:
+        if len(user["tags"])==0:
+            continue
         tags = news_api.Tags(user["tags"])
         articles = news.search(tags)
         print(f"Fant {len(articles)} relvante artikler av totalt {len(news)} artikler basert på disse temane {tags}")
@@ -29,7 +31,7 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
         EMAIL_SENDER = os.getenv("EMAIL_SENDER")
         EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
-        smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
+        #smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
         em = EmailMessage()
         em["From"] = EMAIL_SENDER
         em["To"] = TO_EMAIL
