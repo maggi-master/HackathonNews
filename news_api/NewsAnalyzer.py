@@ -16,6 +16,7 @@ class ArticleCollection:
         formatted_articles = ""
         for articleIndex, article in enumerate(self, start=1):
             formatted_articles += f"\nArtikkel nr. {articleIndex}\n"
+            formatted_articles += f"Relvante temaer {str(article.tags)}\n"
             for key in self.important_keys:
                 formatted_articles += str(article.get(key, ''))+"\n"
         
