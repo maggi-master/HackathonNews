@@ -19,10 +19,11 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
         if len(user["tags"])==0:
             continue
         tags = news_api.Tags(user["tags"])
+        tags.embedd_tags()
         articles = news.search(tags)
         print(f"Fant {len(articles)} relvante artikler av totalt {len(news)} artikler basert på disse temane {tags}")
 
-        analyzer = news_api.ArticleCollection(articles)
+        analyzer = news_api.ArticleCollection(articles, tags)
         BODY = analyzer.generate_email()
         print(BODY)
         
