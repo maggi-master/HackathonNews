@@ -1,11 +1,13 @@
 import news_api
 from database import ServerFirebaseConfig, FirebaseHandler
-import smtplib
 from dotenv import load_dotenv
 import os
 import smtplib
 import ssl
 from email.message import EmailMessage
+import markdown
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 load_dotenv()
 
 config = ServerFirebaseConfig()
@@ -26,20 +28,14 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
         print(f"Fant {len(articles)} relvante artikler av totalt {len(news)} artikler basert på disse temane {tags}")
 
         analyzer = news_api.ArticleCollection(articles, tags)
-        BODY = analyzer.generate_email()
-        print(BODY)
-        
-        TO_EMAIL = user["email"]
-        SUBJECT = "Dagens Nyheter"
-        EMAIL_SENDER = os.getenv("EMAIL_SENDER")
-        EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+        email = analyzer.generate_email()
 
-        smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
-        em = EmailMessage()
-        em["From"] = EMAIL_SENDER
-        em["To"] = TO_EMAIL
-        em["Subject"] = SUBJECT
-        em.set_content(BODY)
+        smtp.login(os.getenv("EMAIL_SENDER"), os.getenv("EMAIL_PASSWORD"))
+        html = markdown.markdown(email)
+        msg = MIMEText(html, 'html')
+        msg["From"] = os.getenv("EMAIL_SENDER")
+        msg["To"] = user["email"]
+        msg["Subject"] = "Dagens Nyheter"
         
-        smtp.sendmail(EMAIL_SENDER, TO_EMAIL, em.as_string())
-        print(f"Email Sendt to {TO_EMAIL}")
+        smtp.sendmail(os.getenv("EMAIL_SENDER"), user["email"], msg.as_string())
+        print(f"Email Sendt to {user["email"]}")
