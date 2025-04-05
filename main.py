@@ -4,10 +4,8 @@ from dotenv import load_dotenv
 import os
 import smtplib
 import ssl
-from email.message import EmailMessage
 import markdown
 from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 load_dotenv()
 
 config = ServerFirebaseConfig()
