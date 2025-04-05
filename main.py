@@ -30,6 +30,10 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
         analyzer = news_api.ArticleCollection(articles, tags)
         email = analyzer.generate_email()
 
+        f = open(f"./emails/{user["email"]}.md", "w")
+        f.write(email)
+        f.close()
+
         smtp.login(os.getenv("EMAIL_SENDER"), os.getenv("EMAIL_PASSWORD"))
         html = markdown.markdown(email)
         msg = MIMEText(html, 'html')
