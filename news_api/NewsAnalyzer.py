@@ -5,7 +5,7 @@ import openai
 class ArticleCollection:
     def __init__(self, articles:list[Article], tags:Tags):
         self._articles = articles
-        self.important_keys = ['title', 'content', 'author', 'published', 'source', 'link']
+        self.important_keys = ['content', 'author', 'published', 'source', 'link']
         self.tags = tags
 
     def generate_email(self, model="gpt-4o-mini") -> str:
@@ -14,8 +14,8 @@ class ArticleCollection:
         summarize critically, and then write an email based on the summary, referencing the articles.
         """
         formatted_articles = ""
-        for articleIndex, article in enumerate(self, start=1):
-            formatted_articles += f"\nArtikkel nr. {articleIndex}\n"
+        for article in self:
+            formatted_articles += f"Tittel: {article["title"]}\n"
             formatted_articles += f"Relvante temaer {str(article.tags)}\n"
             for key in self.important_keys:
                 formatted_articles += str(article.get(key, ''))+"\n"
