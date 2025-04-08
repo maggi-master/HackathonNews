@@ -21,15 +21,12 @@ class ArticleCollection:
                 formatted_articles += str(article.get(key, ''))+"\n"
         
         promt = f"""
-Analyser og oppsummer følgende nyhetsartikler. Vurder kritisk vinkling, troverdighet og mulige mangler ved dekningen.
+Analyser og oppsummer følgende nyhetsartikler. Fokuser på å beskrive hovedinnholdet og de viktigste hendelsene, og syntetiser informasjonen på tvers av artiklene for å gi en helhetlig oversikt over de ulike temaene.
 
 Nyhetene for i dag:
-Oppsummer de viktigste hendelsene og trekk frem eventuelle motstridende synspunkter. Syntetiser informasjonen på tvers av artiklene for å gi en helhetlig oversikt over de ulike temaene.
+Oppsummer de sentrale hendelsene, og fremhev eventuelle motstridende synspunkter. Kategoriser nyhetene etter temaene {str(self.tags)}. Du kan kombinere temaer hvis de er relevante for hverandre, og utelate temaer som ikke har tilstrekkelig dekning.
 
-Kategoriser nyhetene etter temane {str(self.tags)}. Du kan kombinere temaer hvis de er relvante til hverandre. Du kan fjerne temaer hvis det ikke er noen nyheter om temaene. 
-Bruk hyperlenker til artiklene direkte i teksten for å referere til kilder.
-Analyser vinkling ved å sammenligne dekningen fra ulike kilder, peke på skjevheter og identifisere eventuelle manglende perspektiver.
-Vær presis og objektiv, men også kritisk der det er nødvendig.
+Bruk hyperlenker til artiklene direkte i teksten for å referere til kildene.
 
 Kildeliste:
 Oppgi en liste over de analyserte artiklene med deres titler og lenker.
@@ -37,6 +34,7 @@ Oppgi en liste over de analyserte artiklene med deres titler og lenker.
 #### Artikler til analyse:
 {formatted_articles}
 """
+
 
         messages = [
             {"role": "system", "content": "Du er en AI-assistent som kritisk oppsummerer nyhetsartikler på norsk."},
